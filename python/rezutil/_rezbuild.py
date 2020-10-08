@@ -261,6 +261,12 @@ def zip_build(source_path, build_path, install_path, targets=None):
     pkg_name = os.environ["REZ_BUILD_PROJECT_NAME"]
     pkg_vers = os.environ["REZ_BUILD_PROJECT_VERSION"]
     variant_path = os.environ["REZ_BUILD_VARIANT_SUBPATH"]
+
+    # Strip internal release number, e.g. `x.y.z.rez1`
+    ver_info = pkg_vers.rsplit(".", 1)
+    if ver_info[-1].startswith("rez"):
+        pkg_vers = ver_info[0]
+
     resource = os.path.join(zip_root, pkg_name, pkg_vers, variant_path)
     if not os.path.isdir(resource):
         raise Exception("Path not exists: %s" % resource)
